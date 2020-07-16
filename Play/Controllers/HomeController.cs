@@ -15,5 +15,12 @@ namespace Play.Controllers
 
             return View(employees);
         }
+
+        // return a 302 Found and adds a Location header corresponding to the new route
+        // the browser then makes the request to the location header route (second get)
+        public IActionResult Test()
+        {
+            return RedirectToAction("Index");
+        }
     }
 }
