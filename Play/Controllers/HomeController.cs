@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Play.Models;
 
 namespace Play.Controllers
@@ -21,6 +22,21 @@ namespace Play.Controllers
         public IActionResult Test()
         {
             return RedirectToAction("Index");
+        }
+
+        [Route("Home/context")]
+        public IActionResult TestHttpContext()
+        {
+            //anything more and it throws memory exception
+            var x = ControllerContext.HttpContext.Request.Headers;
+            var y = JsonConvert.SerializeObject(x,
+                Formatting.Indented,
+                new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            //return Json(y);
+            return Content(y);
         }
     }
 }
