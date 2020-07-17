@@ -28,6 +28,9 @@ namespace Play
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<RequestCultureMiddleware>();
+            app.UseMiddleware<DateTimeMiddleware>();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
