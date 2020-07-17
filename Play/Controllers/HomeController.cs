@@ -38,5 +38,28 @@ namespace Play.Controllers
             //return Json(y);
             return Content(y);
         }
+
+        [Route("Home/mb")]
+        public IActionResult TestModelBinding([FromHeader(Name = "Accept-Language")] string language) 
+        {
+            //en-GB,en-US;q=0.9,en;q=0.8,it;q=0.7
+            return Content(language);
+        }
+
+        [Route("Home/base64string")]
+        [HttpPost]
+        //post from postman a base64 endoded string
+        //dGhpcyBpcyB0aGUgY29udGVudCBvZiBteSB0ZXh0IGZpbGUNCmFuZCBhIG5ldyBsaW5lDQp0aGUgZW5kIQ==
+        public IActionResult Base64String([FromForm] byte[] file, string filename)
+        {
+            System.IO.File.WriteAllBytes(filename, file);
+            var json = JsonConvert.SerializeObject(ControllerContext.HttpContext.Request.Headers,
+                Formatting.Indented,
+                new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+            return Ok(json);
+        }
     }
 }
